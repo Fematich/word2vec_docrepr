@@ -6,9 +6,10 @@
 """
 Module for transforming a text document into a bag of wordembeddings
 """
+import numpy as np
 import logging,sys,os
 import dataprocessing
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords as NLTKStopwords
 from dataprocessing.muc import MUCmessages
 from gensim.models.word2vec import Word2Vec
 
@@ -21,25 +22,29 @@ class BagEmbeddings():
     def __init__(self,modelpath='/home/mfeys/work/data/word2vec',model='vectors600.bin',stopwords=None):
         self.model = Word2Vec.load_word2vec_format(os.path.join(modelpath,model), binary=True)  # C binary format
         if stopwords==None:
-            self.stopwords=stopwords.words('english')
+            self.stopwords=NLTKStopwords.words('english')
         else:
             self.stopwords=stopwords
     
-    def transformdoc(doc):
-        texts = [word for word in document.lower().split() if word not in stoplist] for document in documents]
+    def transformdoc(self,doc):
+        document=np.zeros(self.model.layer1_size)
+        for word in doc.lower().split():
+            if word not in self.stopwords:
+                try:
+                    document+=self.model[word]
+                except Exception:
+                    pass
+        return document
 
-    def transformcorpus(corpus):
+    def transformcorpus(self,corpus):
         for doc in corpus:
             yield self.transformdoc(doc)
 
 
 if __name__ == '__main__':
-    stopwords.words('english')
     tel=0
     msgs=MUCmessages()
+    model=BagEmbeddings()
     res,ndocs=msgs.finddocs('guatemala',10)
-    print ndocs
-    print len(res)
     for msg in res:
-        print msg['content'].lower()
-        test
+        print model.transformdoc(msg['content'])
