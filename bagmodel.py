@@ -8,8 +8,10 @@ Module for transforming a text document into a bag of wordembeddings
 """
 import numpy as np
 import logging,sys,os
+import cPickle as pickle
 import dataprocessing
 from nltk.corpus import stopwords as NLTKStopwords
+from nltk import word_tokenize, wordpunct_tokenize
 from dataprocessing.muc import MUCmessages
 from gensim.models.word2vec import Word2Vec
 
@@ -28,23 +30,25 @@ class BagEmbeddings():
     
     def transformdoc(self,doc):
         document=np.zeros(self.model.layer1_size)
-        for word in doc.lower().split():
-            if word not in self.stopwords:
+        for word in [word_tokenize(sentence) for sentence in wordpunct_tokenize(doc.lower())]:
+            if word[0] not in self.stopwords:
                 try:
-                    document+=self.model[word]
+                    document+=self.model[word[0]]
                 except Exception:
                     pass
         return document
 
-    def transformcorpus(self,corpus):
+    def streamtransformcorpus(self,corpus):
         for doc in corpus:
             yield self.transformdoc(doc)
 
 
 if __name__ == '__main__':
-    tel=0
     msgs=MUCmessages()
     model=BagEmbeddings()
-    res,ndocs=msgs.finddocs('guatemala',10)
-    for msg in res:
-        print model.transformdoc(msg['content'])
+#    res,ndocs=msgs.finddocs('guatemala',10)
+#    for msg in res:
+#        print model.transformdoc(msg['content'])
+#    corpus=np.array([model.transformdoc(doc[1]['content'].lower()) for doc in msgs])
+#    pickle.dump(corpus,open('../data/corpus.pck','w'))
+#    logger.info('done')
