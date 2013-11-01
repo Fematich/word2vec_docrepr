@@ -52,3 +52,6 @@ if __name__ == '__main__':
 #    corpus=np.array([model.transformdoc(doc[1]['content'].lower()) for doc in msgs])
 #    pickle.dump(corpus,open('../data/corpus.pck','w'))
 #    logger.info('done')
+
+    #todo: add types to whoosh index
+    
