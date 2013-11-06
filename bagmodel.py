@@ -21,7 +21,7 @@ class BagEmbeddings():
     '''
     class around gensim Word2Vec model, to transform complete document into a Word2Vec bag of words
     '''
-    def __init__(self,modelpath='/home/mfeys/work/data/word2vec',model='vectors600.bin',stopwords=None):
+    def __init__(self,modelpath='/home/mfeys/work/data/word2vec',model='vectors1000w16.bin',stopwords=None):
         self.model = Word2Vec.load_word2vec_format(os.path.join(modelpath,model), binary=True)  # C binary format
         if stopwords==None:
             self.stopwords=NLTKStopwords.words('english')
@@ -49,9 +49,9 @@ if __name__ == '__main__':
 #    res,ndocs=msgs.finddocs('guatemala',10)
 #    for msg in res:
 #        print model.transformdoc(msg['content'])
-#    corpus=np.array([model.transformdoc(doc[1]['content'].lower()) for doc in msgs])
-#    pickle.dump(corpus,open('../data/corpus.pck','w'))
-#    logger.info('done')
+    corpus=np.array([model.transformdoc(doc[1]['content'].lower()) for doc in msgs])
+    pickle.dump(corpus,open('../data/corpus1000w16.pck','w'))
+    logger.info('done')
 
     #todo: add types to whoosh index
     
