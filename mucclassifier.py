@@ -69,4 +69,4 @@ def SVMClassifier(corpusname):
             continue
     return ret
 if __name__ == '__main__':
-    SVMClassifier(corpusname='TFCorpus.pck')
+    SVMClassifier(corpusname='corpus.pck')
