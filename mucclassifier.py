@@ -19,7 +19,7 @@ types=['BOMBING','ATTACK','KIDNAPPING','ARSON']
 @MongoStore
 def SVMClassifier(corpusname):
     #get documentrepresentations
-    corpus=pickle.load(open(os.path.join('../data',corpusname),'r'))
+    corpus=pickle.load(open(os.path.join('../data/word2vec/corpora',corpusname),'r'))
     X_train=corpus[:1400]
     X_test=corpus[1400:]
     #get labels
@@ -69,4 +69,4 @@ def SVMClassifier(corpusname):
             continue
     return ret
 if __name__ == '__main__':
-    SVMClassifier(corpusname='corpus.pck')
+    SVMClassifier(corpusname='corpus1000w16_cbow.pck')
